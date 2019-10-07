@@ -1,0 +1,1926 @@
+<?xml version="1.0" ?>
+<cherrytree>
+	<node custom_icon_id="0" foreground="" is_bold="False" name="MEGAcmd" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570451884.45" ts_lastsave="1570454298.62" unique_id="1">
+		<rich_text></rich_text>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="Command Summary" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454298.62" ts_lastsave="1570454310.33" unique_id="60">
+			<rich_text>These summaries use the usual conventions - </rich_text>
+			<rich_text family="monospace">[]</rich_text>
+			<rich_text> indicates its content is optional,  
+</rich_text>
+			<rich_text family="monospace">|</rich_text>
+			<rich_text> indicates you should choose either the item on the left or the one on the right (but not both)
+Each command is described as it would be used in the </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#interactive">interactive</rich_text>
+			<rich_text> MEGAcmd shell,
+ and the corresponding </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#scriptable">scriptable</rich_text>
+			<rich_text> command (which must be prefixed with </rich_text>
+			<rich_text family="monospace">mega-</rich_text>
+			<rich_text>) works in the same way.
+Commands referring to a </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#remote-path">remote path</rich_text>
+			<rich_text> are talking about a file in your MEGA account online, whereas a </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#local-path">local path</rich_text>
+			<rich_text> refers to 
+a file or folder on your local device where MEGAcmd is running.
+Verbosity: You can increase the amount of information given by any command by passing </rich_text>
+			<rich_text family="monospace">-v</rich_text>
+			<rich_text> (</rich_text>
+			<rich_text family="monospace">-vv</rich_text>
+			<rich_text>, </rich_text>
+			<rich_text family="monospace">-vvv</rich_text>
+			<rich_text>, ...)
+</rich_text>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="What is it" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454394.2" ts_lastsave="1570455149.06" unique_id="61">
+			<rich_text>This document relates to MEGAcmd version 0.9.9.  It contains introductory information and the </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#command-summary">Command Summary</rich_text>
+			<rich_text>, with links to detailed command descriptions.
+
+
+</rich_text>
+			<rich_text scale="h3">What is it</rich_text>
+			<rich_text>
+A command line tool to work with your MEGA account and files.  The  intent is to offer all the MEGA account functionality via command line.   You can run it in </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#interactive">interactive</rich_text>
+			<rich_text> mode where it processes all commands directly, or you can run its </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#scriptable">scriptable</rich_text>
+			<rich_text>  commands from your favourite Linux or Mac shell such as bash, or you  can even run its commands in a Windows command prompt. And of course you  can write scripts using those scriptable commands.
+Here is an example of downloading a file using MEGAcmd.  In this case  we are downloading a file specified by a public link, which does not  require being logged in: 
+
+</rich_text>
+			<rich_text family="monospace">mega-get https://mega.nz/#F!ABcD1E2F!gHiJ23k-LMno45PqrSTUvw /path/to/local/folder 
+</rich_text>
+			<rich_text>And here is an example of uploading a file using MEGAcmd, and making a  link available to share it, that will expire after 10 minutes.
+
+</rich_text>
+			<rich_text family="monospace">mega-put /path/to/my/temporary_resource /exportedstuff/
+mega-export -a  /exportedstuff/temporary_resource --expire=10M | awk '{print $4}'
+</rich_text>
+			<rich_text>And here is an example of the power of using </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#scriptable">scriptable</rich_text>
+			<rich_text> MEGAcmd commands in bash.  In this case we are going to share some promotional videos previously uploaded to MEGA: 
+
+</rich_text>
+			<rich_text family="monospace">for i in $(mega-find /enterprise/video/promotional2015/may --pattern=&quot;*mpeg&quot;)
+do 
+mega-export -a $i | awk '{print $4}'; 
+done
+</rich_text>
+			<rich_text>In addition to running commands on request, MEGAcmd can also be configured to </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#synchronisation-configurations">synchronise</rich_text>
+			<rich_text> folders between your local device and your MEGA account, or perform regular </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#backup-configurations">backups</rich_text>
+			<rich_text> from your device to your MEGA account.
+In order to enable synchronisation and backup features, and for  efficiency running commands, MEGAcmd runs a server process in the  background which the MEGAcmd shell or the script commands forward  requests to.   The server keeps running in the background until it is  told to close with the </rich_text>
+			<rich_text family="monospace" link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#quit">quit</rich_text>
+			<rich_text>  command.   If you want it to keep running when you quit the interactive  shell (to keep sync and backup runnign for example), use </rich_text>
+			<rich_text family="monospace">quit --only-shell</rich_text>
+			<rich_text>.
+Working with your MEGA account requires signing in with your email and password using the </rich_text>
+			<rich_text family="monospace" link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#login">login</rich_text>
+			<rich_text>  command, though you can download public links or upload to public  folders without logging in.  Logging in with your username and password  starts a </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#session">Session</rich_text>
+			<rich_text>, and causes some of your account such as the folder structure to be downloaded to your </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#local-cache">Local Cache</rich_text>
+			<rich_text>.
+
+
+
+</rich_text>
+			<rich_text scale="h3">Where can you get it</rich_text>
+			<rich_text>
+For Linux, Mac, or Windows: Download it from the MEGA.nz website: </rich_text>
+			<rich_text link="webs https://mega.nz/cmd">https://mega.nz/cmd</rich_text>
+			<rich_text> 
+ We are also building it for some NAS systems, please check your provider's App Store.
+
+
+
+</rich_text>
+			<rich_text scale="h3">What can you do with it</rich_text>
+			<rich_text>
+The major features are
+• Move files around inside your MEGA account or between MEGA and your PC using command line tools.
+• Use those same commands in scripts to manage your files.
+• Set up synchronization or a backup schedule between a folder on your machine, and a folder on your MEGA account.   (use the </rich_text>
+			<rich_text family="monospace" link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#sync">sync</rich_text>
+			<rich_text> or </rich_text>
+			<rich_text family="monospace" link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#backup">backup</rich_text>
+			<rich_text> commands)
+• Set up WebDAV access to files in your MEGA account (use the </rich_text>
+			<rich_text family="monospace" link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#webdav">webdav</rich_text>
+			<rich_text> command)
+See our Help Centre pages for the basics of getting started, and friendly examples of common usages with plenty of pictures:  </rich_text>
+			<rich_text link="webs https://mega.nz/help">https://mega.nz/help</rich_text>
+			<rich_text>
+
+
+
+</rich_text>
+			<rich_text scale="h2">Terminology and Descriptions</rich_text>
+			<rich_text>
+
+
+
+</rich_text>
+			<rich_text scale="h3">Interactive</rich_text>
+			<rich_text>
+Interactive refers to running the MEGAcmd shell which only processes  MEGA commands.  You invoke commands by typing and pressing Enter.   MEGAcmd shell provides a lot of feedback about what it's doing.  You can  start the MEGAcmd shell with </rich_text>
+			<rich_text family="monospace">mega-cmd</rich_text>
+			<rich_text> (or </rich_text>
+			<rich_text family="monospace">MEGAcmd</rich_text>
+			<rich_text> on Windows).  You can then issue commands like </rich_text>
+			<rich_text family="monospace">ls</rich_text>
+			<rich_text> directly: 
+ </rich_text>
+			<rich_text family="monospace">ls /my/account/folder</rich_text>
+			<rich_text>
+ or you can get a list of available commands with: 
+ </rich_text>
+			<rich_text family="monospace">help</rich_text>
+			<rich_text>
+ or you can get detailed information about any particular command by using the </rich_text>
+			<rich_text family="monospace">--help</rich_text>
+			<rich_text> flag with that command:
+ </rich_text>
+			<rich_text family="monospace">ls --help</rich_text>
+			<rich_text>
+ Autocompletion (pressing tab to fill in the remainder of a command) is available in interactive mode.
+
+
+
+</rich_text>
+			<rich_text scale="h3">Scriptable</rich_text>
+			<rich_text>
+Scriptable refers to running the MEGAcmd commands from a shell such  as bash or the windows powershell.  If the PATH to the MEGAcmd commands  are not yet on the PATH in that shell, you'll need to add it.  You can  then issue commands like </rich_text>
+			<rich_text family="monospace">ls</rich_text>
+			<rich_text> by prefixing them with the </rich_text>
+			<rich_text family="monospace">mega-</rich_text>
+			<rich_text> prefix: 
+ </rich_text>
+			<rich_text family="monospace">mega-ls /my/account/folder</rich_text>
+			<rich_text>
+ or you can get a list of available commands with: 
+ </rich_text>
+			<rich_text family="monospace">mega-help</rich_text>
+			<rich_text>
+ or you can get detailed information about any particular command by using the </rich_text>
+			<rich_text family="monospace">--help</rich_text>
+			<rich_text> flag with that command:
+ </rich_text>
+			<rich_text family="monospace">mega-ls --help</rich_text>
+			<rich_text>
+ Scriptable commands can of course be used in scripts to achieve a lot in  a short space of time, using loops or preparing all the desired  commands ahead of time. If you are using bash as your shell, the MEGAcmd commands support  auto-completion.
+
+
+
+</rich_text>
+			<rich_text scale="h3">Contact</rich_text>
+			<rich_text>
+A contact is someone (identified by their email address) that also  has a MEGA account, who you can share files or folders with, and can  chat with on MEGAchat.
+
+
+
+</rich_text>
+			<rich_text scale="h3">Remote Path</rich_text>
+			<rich_text>
+This refers to a file or a folder stored in your MEGA account, or a  publicly available file or folder in the MEGA cloud.  Remote paths  always use the '/' character as the separator between folder and file  elements.
+Some MEGAcmd commands allow the use of regular expressions in remote  paths.  You can check if the command supports those by using the </rich_text>
+			<rich_text family="monospace">--help</rich_text>
+			<rich_text> flag with the command.  If you use these in the </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#scriptable">scriptable</rich_text>
+			<rich_text> way, you need to escape characters that would otherwise be intercepted and interpreted by the shell.
+
+
+
+</rich_text>
+			<rich_text scale="h3">Local Path</rich_text>
+			<rich_text>
+This refers to a file or folder on the PC or device that MEGAcmd is running in.
+
+
+
+</rich_text>
+			<rich_text scale="h3">Session</rich_text>
+			<rich_text>
+When you log in with your email and MEGA account password, that  creates a session.  The session exists until you log out of it or kill  it from another client.  In MEGAcmd, use </rich_text>
+			<rich_text family="monospace">whoami -l</rich_text>
+			<rich_text> to see all your open sessions across all devices, and use </rich_text>
+			<rich_text family="monospace">killsession</rich_text>
+			<rich_text>  to close them.   You can use other MEGA clients such as the phone app,  or webclient to close these also.   Devices that were using a killed  session will have their connection to MEGA closed immediately and will  no longer have access to your account, until you log in on them again.    Syncs, backups, and webdavs are specific to a session, so logging out  will cause them to be cancelled.
+
+
+
+</rich_text>
+			<rich_text scale="h3">Local Cache</rich_text>
+			<rich_text>
+Logging in with MEGAcmd creates your Local Cache, a subfolder of your  home folder.  MEGAcmd downloads and stores some data in your Local  Cache relating to your account, such as folder structure and contacts,  for performance reasons.  The MEGAcmd background server keeps the local  cache up to date when changes to your account occur from other clients.   The cache does contain a way for MEGAcmd to access your MEGA account  when it starts up again if you have not specifically logged out.  The  Local Cache also contains information from your Session, including sync,  backup, and webdav configurations.  Logging out cleans the Local Cache,  but also closes your session and the sync, backup, and webdav  configurations are wiped.
+
+
+
+</rich_text>
+			<rich_text scale="h3">Synchronisation configurations</rich_text>
+			<rich_text>
+MEGAcmd can set up a synchronisation between a folder on your local machine and a folder in your MEGA account, using the </rich_text>
+			<rich_text family="monospace" link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#sync">sync</rich_text>
+			<rich_text>  command.   This is the same mechanism that MEGAsync uses.  The  synchronisation is two-way: the folders you nominate to be synced will  mirror any action!  Whatever you add or delete in your sync folder on  your device gets added or deleted in your sync folder in your MEGA  account.  And additions or deletions in your synced folder in your MEGA  account will similarly be applied to your local synced folder.  Files  that are removed from sync folders are moved to a hidden local folder  (Rubbish/.debris inside your local sync folder, or SyncDebris folder in  the Rubbish Bin of your MEGA account).
+Here is a very simple example of setting up a synchronisation with MEGAcmd: 
+
+</rich_text>
+			<rich_text family="monospace">sync /path/to/local/folder /folder/in/mega
+</rich_text>
+			<rich_text>You can set up more than one pair or folders to be synced, and you  can also set a sync from another device to the same folder, to achieve  folder synchronisations between different devices.   The changes are  sent via your MEGA account rather than directly between the devices in  that case.
+Additional information about synchronising folders is available in our Help Centre:  </rich_text>
+			<rich_text link="webs https://mega.nz/help/client/megasync/syncing">https://mega.nz/help/client/megasync/syncing</rich_text>
+			<rich_text>
+
+
+
+</rich_text>
+			<rich_text scale="h3">Backup configurations</rich_text>
+			<rich_text>
+MEGAcmd can set up a periodic copy of a local folder to your MEGA account using the </rich_text>
+			<rich_text family="monospace" link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#backup">backup</rich_text>
+			<rich_text>  command.  Here is a simple example that will back up a folder  immediately and then at 4am each day, keeping the 10 most recent  backups: 
+
+</rich_text>
+			<rich_text family="monospace">backup /path/mega/folder /remote/path --period=&quot;0 0 4 * * *&quot; --num-backups=10
+</rich_text>
+			<rich_text>For further information on backups, please see the </rich_text>
+			<rich_text family="monospace" link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#backup">backup</rich_text>
+			<rich_text> command and the </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/contrib/docs/BACKUPS.md">tutorial</rich_text>
+			<rich_text>.
+
+
+
+</rich_text>
+			<rich_text scale="h3">WebDAV configurations</rich_text>
+			<rich_text>
+MEGAcmd can set up access to folders or files in your MEGA account as  if they were local folders and files on your device using the </rich_text>
+			<rich_text family="monospace" link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#webdav">webdav</rich_text>
+			<rich_text>  command.  For example making the folder appear like a local drive on  your PC, or providing a hyperlink a browser can access, where the  hyperlink is to your PC.
+For further information on WebDAV, please see the </rich_text>
+			<rich_text family="monospace" link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#webdav">webdav</rich_text>
+			<rich_text> command and the </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/contrib/docs/WEBDAV.md">tutorial</rich_text>
+			<rich_text>.
+
+
+
+</rich_text>
+			<rich_text scale="h3">Linux</rich_text>
+			<rich_text>
+On Linux, MEGAcmd commands are installed at /usr/bin and so will already be on your PATH.  The interactive shell is </rich_text>
+			<rich_text family="monospace">mega-cmd</rich_text>
+			<rich_text> and the background server is </rich_text>
+			<rich_text family="monospace">mega-cmd-server</rich_text>
+			<rich_text>,  which will be automatically started on demand.  The various scriptable  commands are installed at the same location, and invoke </rich_text>
+			<rich_text family="monospace">mega-exec</rich_text>
+			<rich_text> to send the command to </rich_text>
+			<rich_text family="monospace">mega-cmd-server</rich_text>
+			<rich_text>.
+If you are using the scriptable commands in bash (or using the  interactive commands in mega-cmd), the commands will auto-complete.
+
+
+
+</rich_text>
+			<rich_text scale="h3">Macintosh</rich_text>
+			<rich_text>
+For MacOS, after installing the dmg, you can launch the server using MEGAcmd  in Applications. If you wish to use the client commands from MacOS  Terminal, open the Terminal and include the installation folder in the  PATH.
+ Typically:
+</rich_text>
+			<rich_text family="monospace">export PATH=/Applications/MEGAcmd.app/Contents/MacOS:$PATH
+</rich_text>
+			<rich_text>And for bash completion, source </rich_text>
+			<rich_text family="monospace">megacmd_completion.sh</rich_text>
+			<rich_text> :
+</rich_text>
+			<rich_text family="monospace">source /Applications/MEGAcmd.app/Contents/MacOS/megacmd_completion.sh
+</rich_text>
+			<rich_text>
+
+
+</rich_text>
+			<rich_text scale="h3">Windows</rich_text>
+			<rich_text>
+Once you have MEGAcmd installed, you can start the </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#interactive">interactive</rich_text>
+			<rich_text> shell from the Start Menu or desktop icon.  On windows the interactive shell executable is called </rich_text>
+			<rich_text family="monospace">MEGAcmdShell.exe</rich_text>
+			<rich_text> and the server is </rich_text>
+			<rich_text family="monospace">MEGAcmdServer.exe</rich_text>
+			<rich_text>.
+On Windows 7, we recommend using the MEGAcmd shell from inside  PowerShell for a better user experience (and you can do this on other  Windows platforms also).  You can start powershell from the Start Menu  and then execute these commands to start it:
+</rich_text>
+			<rich_text family="monospace">$env:PATH += &quot;;$env:LOCALAPPDATA\MEGAcmd&quot;
+MEGAcmdShell
+</rich_text>
+			<rich_text>For </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#scriptable">scriptable</rich_text>
+			<rich_text>  usage, the MEGAcmd commands are provided via installed .bat files which  pass the command to the MEGAcmdServer.exe.  Provided you have set the  PATH as above, you can use these like normal command line tools in  PowerShell:
+</rich_text>
+			<rich_text family="monospace">$env:PATH += &quot;;$env:LOCALAPPDATA\MEGAcmd&quot;
+mega-cd /my/favourite/folder
+mega-ls 
+</rich_text>
+			<rich_text>Or in Command Prompt:
+</rich_text>
+			<rich_text family="monospace">set PATH=%LOCALAPPDATA%\MEGAcmd;%PATH%
+mega-cd /my/favourite/folder
+mega-ls 
+</rich_text>
+			<rich_text>And of course those can be invoked in your own .bat or .cmd files. Autocompletion is not available for the scriptable commands, but is in the interactive shell.
+Unicode is supported though it currently in the interactive shell it  needs to be switched on, and to have a suitable font selected; please  execute </rich_text>
+			<rich_text family="monospace">help --unicode</rich_text>
+			<rich_text> for the latest information.  There are plans to improve this.  Please report any issues experienced to our support team.
+
+
+
+</rich_text>
+			<rich_text scale="h3">NAS Support</rich_text>
+			<rich_text>
+We have released packages for QNAP and Synology, which you can  download and install from the App Center in QNAP, and the Package Center  in Synology.   In QNAP, please make sure to turn on &quot;Enable home folder  for all users&quot; from the control panel, and set HOME=/share/homes/  before starting any MEGA commands, and in Synology, 'Enable user home  service', so that the </rich_text>
+			<rich_text family="monospace">mega-cmd-server</rich_text>
+			<rich_text> creates the </rich_text>
+			<rich_text family="monospace">.megaCmd</rich_text>
+			<rich_text> local cache folder there (as the default HOME location may be erased on restart).
+</rich_text>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="Usage" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570455149.06" ts_lastsave="1570455161.09" unique_id="70">
+			<rich_text>Before explaining the two ways of interaction, it is important to  understand how MEGAcmd works. When you login with MEGAcmd, your session,  the list of synced folders, and some cache database are stored in your  local home folder. MEGAcmd also stores some other configuration in that  folder. Closing it does not delete those and restarting your computer  will restore your previous session (the same as megasync won't ask for  user/password once you restart your computer).
+You will need to </rich_text>
+			<rich_text family="monospace">logout</rich_text>
+			<rich_text> properly in order to clean your data.
+Now let's get into details of the two usage modes. Both modes require  that MEGAcmdServer is running. You can manually launch it. Fortunately,  you can also open the interactive shell or execute any command and the  server will start automatically.
+
+
+
+</rich_text>
+			<rich_text scale="h2">Interactively:</rich_text>
+			<rich_text>
+Execute MEGAcmd shell. </rich_text>
+			<rich_text family="monospace" link="webs https://github.com/meganz/MEGAcmd#platforms">Platform</rich_text>
+			<rich_text>  section explains how to do that in the different supported systems. You  should be facing an interactive shell where you can start typing your  commands, with their arguments and flags.
+You can list all the available commands with </rich_text>
+			<rich_text family="monospace">help</rich_text>
+			<rich_text>.
+And obtain useful information about a command with </rich_text>
+			<rich_text family="monospace">command --help</rich_text>
+			<rich_text>
+First you would like to log in into your account. Again, notice that  doing this stores the session and other stuff in your home folder. A  complete logout is required if you want to end you session permanently  and clean any traces (see </rich_text>
+			<rich_text family="monospace">logout --help</rich_text>
+			<rich_text> for further info).
+
+
+
+</rich_text>
+			<rich_text scale="h2">Non-interactively:</rich_text>
+			<rich_text>
+When MEGAcmd server is running, it will be listening for client commands. Use the different </rich_text>
+			<rich_text family="monospace">mega-*</rich_text>
+			<rich_text> commands available.
+</rich_text>
+			<rich_text family="monospace">mega-help</rich_text>
+			<rich_text> will list all these commands (you will need to prepend &quot;mega-&quot; to the commands listed there). To obtain further info use </rich_text>
+			<rich_text family="monospace">mega-command --help</rich_text>
+			<rich_text>
+Those commands will have an output value != 0 in case of failure. See </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/src/megacmd.h">megacmd.h</rich_text>
+			<rich_text> to view the existing error codes.
+Ideally, you would like to have these commands in your </rich_text>
+			<rich_text family="monospace">PATH</rich_text>
+			<rich_text> variable (See </rich_text>
+			<rich_text family="monospace" link="webs https://github.com/meganz/MEGAcmd#platforms">Platform</rich_text>
+			<rich_text> for more info). For further info use </rich_text>
+			<rich_text family="monospace">mega-help --non-interactive</rich_text>
+			<rich_text>.
+
+
+
+</rich_text>
+			<rich_text scale="h2">Usage examples</rich_text>
+			<rich_text>
+Here are some examples of use (more info and usage examples are available at the </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md">User Guide</rich_text>
+			<rich_text>).
+Notice: the commands listed here assume you are using the interactive  interaction mode: they are supposed to be executed within MEGAcmdShell.
+• A synchronization can be established simply by typing:
+</rich_text>
+			<rich_text family="monospace">sync /path/to/local/folder /folder/in/mega
+</rich_text>
+			<rich_text>This will synchronize the contents in your local and your mega folder both ways.
+• You can also set remote backups of a local folder to keep historical snapshots of your files. So simple as:
+</rich_text>
+			<rich_text family="monospace">backup /path/mega/folder /remote/path --period=&quot;0 0 4 * * *&quot; --num-backups=10
+</rich_text>
+			<rich_text>This will configure a backup of &quot;myfolder&quot; into /remote/path that  will be carried out at 4:00 A.M. (UTC) every day. It will store the last  10 copies.
+Further info on backups </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/contrib/docs/BACKUPS.md">here</rich_text>
+			<rich_text>.
+• You serve a location in your MEGA account via webdav:
+</rich_text>
+			<rich_text family="monospace">webdav /path/mega/folder
+</rich_text>
+			<rich_text>• Or stream a file in your MEGA account:
+</rich_text>
+			<rich_text family="monospace">webdav /path/to/myfile.mp4
+</rich_text>
+			<rich_text>Further info on webdav and streaming </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/contrib/docs/WEBDAV.md">here</rich_text>
+			<rich_text>.
+• Download the contents of a shared link:
+</rich_text>
+			<rich_text family="monospace">get https://mega.nz/#F!ABcD1E2F!gHiJ23k-LMno45PqrSTUvw /path/to/local/folder 
+</rich_text>
+			<rich_text>Now let's do something more complicated with non-interactive usage  using some GNU tools (similar stuff can be easily done in Windows as  well):
+• We want to provide something crypto secured with only 10 minutes of access:
+</rich_text>
+			<rich_text family="monospace">mega-put /path/to/my/temporary_resource /exportedstuff/
+mega-export -a  /exportedstuff/temporary_resource --expire=10M | awk '{print $4}'
+</rich_text>
+			<rich_text>• Or imagine we'd like to public the enterprise promotional videos of May 2015 that we have previously stored in MEGA:
+</rich_text>
+			<rich_text family="monospace">for i in $(mega-find /enterprise/video/promotional2015/may --pattern=&quot;*mpeg&quot;); do 
+mega-export -a $i | awk '{print $4}'; 
+done
+</rich_text>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="Platforms" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570455170.26" ts_lastsave="1570455179.75" unique_id="71">
+			<rich_text>
+</rich_text>
+			<rich_text scale="h2">Linux</rich_text>
+			<rich_text>
+If you have installed MEGAcmd using one of the available packages at </rich_text>
+			<rich_text link="webs https://mega.nz/cmd">here</rich_text>
+			<rich_text>. Or have it built without </rich_text>
+			<rich_text family="monospace">--prefix</rich_text>
+			<rich_text>, both the server (</rich_text>
+			<rich_text family="monospace">mega-cmd-server</rich_text>
+			<rich_text>), the shell (</rich_text>
+			<rich_text family="monospace">mega-cmd</rich_text>
+			<rich_text>) and the different client commands (</rich_text>
+			<rich_text family="monospace">mega-*</rich_text>
+			<rich_text>) will be in your </rich_text>
+			<rich_text family="monospace">PATH</rich_text>
+			<rich_text> (on a fresh install, you might need to open your terminal again).
+If you are using bash, you should also have autocompletion for client commands working.
+If that is not you case, include the location for the binaries in your </rich_text>
+			<rich_text family="monospace">PATH</rich_text>
+			<rich_text> variable.
+
+
+
+</rich_text>
+			<rich_text scale="h2">Windows</rich_text>
+			<rich_text>
+Once you have MEGAcmd installed, you just need to execute it (via  Desktop icon or Start Menu) to open the shell.  This will open  MEGAcmdServer in the background (a process named MEGAcmdServer.exe).
+For a better user experience (specially in Windows 7) we recommend executing MEGAcmd from PowerShell.
+Open PowerShell and execute:
+</rich_text>
+			<rich_text family="monospace">$env:PATH += &quot;;$env:LOCALAPPDATA\MEGAcmd&quot;
+MEGAcmdShell
+</rich_text>
+			<rich_text>For non-interactive usage, there are several </rich_text>
+			<rich_text family="monospace">mega-*.bat</rich_text>
+			<rich_text>  client commands you can use writting their absolute paths, or including their location into your environment </rich_text>
+			<rich_text family="monospace">PATH</rich_text>
+			<rich_text> and execute them normally (</rich_text>
+			<rich_text family="monospace">mega-*</rich_text>
+			<rich_text>).
+If you use PowerShell and you have installed the official MEGAcmd, you can do that simply with:
+</rich_text>
+			<rich_text family="monospace">$env:PATH += &quot;;$env:LOCALAPPDATA\MEGAcmd&quot;
+</rich_text>
+			<rich_text>Client commands completion requires bash, hence, it is not available for Windows.
+
+
+
+</rich_text>
+			<rich_text scale="h3">Caveats</rich_text>
+			<rich_text>
+Although there have been several efforts in having non-ASCII unicode characters supported in Windows, there still may be some issues. Pay special attention if you are willing to use pipes or send the output of a command into a file from your client commands. See </rich_text>
+			<rich_text family="monospace">help --unicode</rich_text>
+			<rich_text> for further info regarding that.
+
+
+
+</rich_text>
+			<rich_text scale="h2">MacOS</rich_text>
+			<rich_text>
+For MacOS, after installing the dmg, you can launch the server using  MEGAcmd in Applications. If you wish to use the client commands from  MacOS Terminal, open the Terminal and include the installation folder in  the </rich_text>
+			<rich_text family="monospace">PATH</rich_text>
+			<rich_text>. Typically:
+</rich_text>
+			<rich_text family="monospace">export PATH=/Applications/MEGAcmd.app/Contents/MacOS:$PATH
+</rich_text>
+			<rich_text>And for bash completion, source </rich_text>
+			<rich_text family="monospace">megacmd_completion.sh</rich_text>
+			<rich_text> :
+</rich_text>
+			<rich_text family="monospace">source /Applications/MEGAcmd.app/Contents/MacOS/megacmd_completion.sh
+</rich_text>
+			<rich_text>
+
+
+</rich_text>
+			<rich_text scale="h2">NAS systems</rich_text>
+			<rich_text>
+Currently we have build scripts for Synology and QNAP,  which can be found in the build/ folder along with instructions on how  to set up the build.  Typically this results in a 'package' which can  then be manually installed in the NAS.   To use MEGAcmd on those  systems, ssh into the device and run the commands as normal (having  first added their folder to your </rich_text>
+			<rich_text family="monospace">PATH</rich_text>
+			<rich_text> variable).
+</rich_text>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="Features:" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570455192.34" ts_lastsave="1570455202.89" unique_id="72">
+			<rich_text>
+</rich_text>
+			<rich_text scale="h2">Autocompletion:</rich_text>
+			<rich_text>
+MEGAcmd features autocompletion in both interactive and  non-interactive (only for bash) mode. It will help completing both local  and remote (Mega Cloud) files, flags for commands, values for  flags/access levels, even contacts.
+
+
+
+</rich_text>
+			<rich_text scale="h2">Verbosity</rich_text>
+			<rich_text>
+There are two different kinds of logging messages:
+• SDK based: those messages reported by the sdk and dependent libraries.
+• MEGAcmd based: those messages reported by MEGAcmd itself.
+You can adjust the level of logging for those kinds with </rich_text>
+			<rich_text family="monospace">log</rich_text>
+			<rich_text> command.
+However, passing </rich_text>
+			<rich_text family="monospace">-v</rich_text>
+			<rich_text> (</rich_text>
+			<rich_text family="monospace">-vv</rich_text>
+			<rich_text>, </rich_text>
+			<rich_text family="monospace">-vvv</rich_text>
+			<rich_text>, and so on for a more verbose output) to an specific command will use higher level of verbosity of MEGAcmd based messages.
+Further info on verbosity </rich_text>
+			<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/contrib/docs/DEBUG.md">here</rich_text>
+			<rich_text>.
+
+
+
+</rich_text>
+			<rich_text scale="h2">Regular Expressions</rich_text>
+			<rich_text>
+If you have compiled MEGAcmd with PCRE (enabled by default), you can  use PCRE compatible expressions in certain commands with the flag </rich_text>
+			<rich_text family="monospace">--use-pcre</rich_text>
+			<rich_text>. Otherwise, if compiled with c++11, c++11 regular expressions will be used.
+If none of the above is the case, you can only use wildcards: &quot;*&quot; for  any number of characters or &quot;?&quot; for a single unknown character.
+You can check the regular expressions compatibility with </rich_text>
+			<rich_text family="monospace">find --help</rich_text>
+			<rich_text>:
+</rich_text>
+			<rich_text family="monospace">find --help
+...
+Options:
+ --pattern=PATTERN	Pattern to match (Perl Compatible Regular Expressions)
+</rich_text>
+			<rich_text>Notice: if you use MEGAcmd in non interactive mode, notice that shell  pattern will take precedence. You will need to either escape symbols  like </rich_text>
+			<rich_text family="monospace">*</rich_text>
+			<rich_text> (</rich_text>
+			<rich_text family="monospace">\*</rich_text>
+			<rich_text>) or surround them between quotes (e.g: &quot;*.txt&quot;)
+
+
+
+</rich_text>
+			<rich_text scale="h2">MEGAcmd Updates</rich_text>
+			<rich_text>
+MEGAcmd updates automatically for Windows &amp; MacOS.
+For Linux, whenever there is a new update, it will be published in  the corresponding repository and your system's updating tool will let  you update it.
+
+
+
+</rich_text>
+			<rich_text scale="h3">Disable automatic updates</rich_text>
+			<rich_text>
+You can type </rich_text>
+			<rich_text family="monospace">update --auto=OFF</rich_text>
+			<rich_text> to disable automatic updates. </rich_text>
+			<rich_text family="monospace">update --auto=ON</rich_text>
+			<rich_text> will re-enable them.
+If you want to see the state of automatic updates you can use </rich_text>
+			<rich_text family="monospace">update --auto=query</rich_text>
+			<rich_text>. This will inform if automatic updates are enabled or not.
+Notice that MEGAcmdServer must be running in order to have automatic updates working.
+You can also update manually by typing </rich_text>
+			<rich_text family="monospace">update</rich_text>
+			<rich_text> within  MEGAcmd. This will check if there are updates available and proceed to  update if affirmative. Whenever MEGAcmd is updated it will be restarted  (all open instances of MEGAcmdShell will be restarted too).
+Alternatively you can also execute </rich_text>
+			<rich_text family="monospace">MEGAcmdUpdater.exe</rich_text>
+			<rich_text> in Windows or </rich_text>
+			<rich_text family="monospace">MEGAcmdUpdater</rich_text>
+			<rich_text> (located at /Applications/MEGAcmd.app/Contents/MacOS) in MacOS.
+</rich_text>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="Account / Contacts" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570451911.77" ts_lastsave="1570452596.12" unique_id="2">
+			<rich_text></rich_text>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="signup" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570451929.69" ts_lastsave="1570452298.65" unique_id="3">
+				<rich_text>Register as user with a given email 
+
+Usage: </rich_text>
+				<rich_text family="monospace">signup email [password] [--name=&quot;Your Name&quot;]</rich_text>
+				<rich_text>
+
+Options:
+  --name=&quot;Your Name&quot;     Name to register. e.g. &quot;John Smith&quot;
+
+You will receive an email to confirm your account.
+Once you have received the email, please proceed to confirm the link included in that email with &quot;confirm&quot;.
+
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="confirm" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452053.94" ts_lastsave="1570452377.74" unique_id="5">
+				<rich_text>Confirm an account using the link provided after the &quot;signup&quot; process. 
+ 
+Usage: </rich_text>
+				<rich_text family="monospace">confirm link email [password]</rich_text>
+				<rich_text> It requires the email and the password used to obtain the link.
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="invite" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452360.24" ts_lastsave="1570452396.88" unique_id="7">
+				<rich_text>Invites a contact / deletes an invitation 
+
+Usage: invite [-d|-r] dstemail [--message=&quot;MESSAGE&quot;]
+
+Options:
+  -d                   Deletes invitation
+  -r                   Resends the invitation
+  --message=&quot;MESSAGE&quot;  Sends the invitation, including your message.
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="showpcr" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452396.88" ts_lastsave="1570452403.82" unique_id="8">
+				<rich_text>Shows incoming and outgoing contact requests.  
+
+Usage: </rich_text>
+				<rich_text family="monospace">showpcr [--in | --out]</rich_text>
+				<rich_text>
+
+Options:
+  --in   Shows incoming requests
+  --out  Shows outgoing invitations
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="ipc" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452425.04" ts_lastsave="1570452431.29" unique_id="9">
+				<rich_text>Manages contact incoming invitations.   
+
+Usage: </rich_text>
+				<rich_text family="monospace">ipc email|handle -a|-d|-i</rich_text>
+				<rich_text>
+
+Options:
+  -a     Accepts invitation
+  -d     Rejects invitation
+  -i     Ignores invitation [WARNING: do not use unless you know what you are doing]
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="users" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452453.39" ts_lastsave="1570452459.14" unique_id="10">
+				<rich_text>List contacts  
+
+Usage: </rich_text>
+				<rich_text family="monospace">users [-s] [-h] [-n] [-d contact@email]</rich_text>
+				<rich_text>
+
+Options:
+  -s     Show shared folders with listed contacts
+  -h     Show all contacts (hidden, blocked, ...)
+  -n     Show users names
+  -d     contact@email Deletes the specified contact
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="userattr" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452490.5" ts_lastsave="1570452496.19" unique_id="11">
+				<rich_text>Lists/updates user attributes  
+
+Usage: </rich_text>
+				<rich_text family="monospace">userattr [-s attribute value|attribute] [--user=user@email]</rich_text>
+				<rich_text>
+
+Options:
+  -s attribute value     sets an attribute to a value
+  --user=user@email      select the user to query
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="passwd" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452515.33" ts_lastsave="1570452522.52" unique_id="12">
+				<rich_text>Modifies user password
+
+Usage: </rich_text>
+				<rich_text family="monospace">passwd [oldpassword newpassword]</rich_text>
+				<rich_text>
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="masterkey" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452546.59" ts_lastsave="1570452558.31" unique_id="13">
+				<rich_text>Shows your master key.
+
+Usage: </rich_text>
+				<rich_text family="monospace">masterkey pathtosave</rich_text>
+				<rich_text>
+
+Getting the master key and keeping it in a secure location enables you to set a new password without data loss.
+Always keep physical control of your master key (e.g. on a client device, external storage, or print)
+</rich_text>
+			</node>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="Login / Logout" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452596.12" ts_lastsave="1570452875.05" unique_id="14">
+			<rich_text></rich_text>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="login" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452609.33" ts_lastsave="1570452628.37" unique_id="15">
+				<rich_text>Log into your MEGA account 
+
+Usage: </rich_text>
+				<rich_text family="monospace">login [email [password]] | exportedfolderurl#key | session</rich_text>
+				<rich_text>
+
+You can log in either with email and password, with session ID, or into a folder (an exported/public folder).
+If logging into a folder indicate url#key
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="logout" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452658.62" ts_lastsave="1570452679.59" unique_id="16">
+				<rich_text>Closes your session for security or to allow subsequently logging into a different account. 
+
+Usage: logout [--keep-session]
+
+Options:
+  --keep-session    The current session is not closed, allowing logging back into it later using the session ID rather than email/password.
+  
+MEGAcmd will still log back into your account automatically on restart if you specify --keep-session, similar to exiting it without logging out.
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="whoami" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452710.07" ts_lastsave="1570452785.24" unique_id="17">
+				<rich_text>Print account information 
+
+Usage: </rich_text>
+				<rich_text family="monospace">whoami [-l]</rich_text>
+				<rich_text>
+
+Options:
+ -l     Show extended info: total storage used, storage per main folder
+        (see mount), pro level, account balance, and also the active sessions
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="Session" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452785.24" ts_lastsave="1570452791.68" unique_id="18">
+				<rich_text>When you log in with your email and MEGA account password, that creates a session. 
+ The session exists until you log out of it or kill it from another client. 
+  In MEGAcmd, use </rich_text>
+				<rich_text family="monospace">whoami -l</rich_text>
+				<rich_text> to see all your open sessions across all devices, and use </rich_text>
+				<rich_text family="monospace">killsession</rich_text>
+				<rich_text> to close them.  
+   You can use other MEGA clients such as the phone app, or webclient to close these also.   
+   Devices that were using a killed session will have their connection to MEGA closed immediately and will no longer have access to your account,
+    until you log in on them again.   Syncs, backups, and webdavs are specific to a session, so logging out will cause them to be cancelled.</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="killsession" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452832.02" ts_lastsave="1570452852.65" unique_id="19">
+				<rich_text>Kills a session of current user.
+
+Usage: killsession [-a|sessionid]
+
+Options:
+  -a     kills all sessions except the current one
+
+To see all sessions use &quot;whoami -l&quot;
+</rich_text>
+			</node>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="Browse" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452875.05" ts_lastsave="1570453246.08" unique_id="20">
+			<rich_text></rich_text>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="cd" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452887.13" ts_lastsave="1570454561.08" unique_id="21">
+				<rich_text>Changes the current remote folder  
+
+Usage: </rich_text>
+				<rich_text family="monospace">cd [remotepath]</rich_text>
+				<rich_text>
+
+If no folder is provided, it will be changed to the root folder
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="lcd" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452916.6" ts_lastsave="1570452926.33" unique_id="22">
+				<rich_text>Changes the current local folder for the interactive console
+
+Usage: lcd [localpath]
+
+It will be used for uploads and downloads
+
+If not using interactive console, the current local folder will be that of the shell executing mega comands
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="ls" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570452946.49" ts_lastsave="1570452954.06" unique_id="23">
+				<rich_text>Lists files in a remote path
+ remotepath can be a pattern (it accepts wildcards: ? and *. e.g.: f*00?.txt)
+ Also, constructions like /PATTERN1/PATTERN2/PATTERN3 are allowed
+ 
+Usage: </rich_text>
+				<rich_text family="monospace">ls [-halRr] [--versions] [remotepath]</rich_text>
+				<rich_text> 
+
+Options:
+ -R|-r  list folders recursively
+ -l     print summary
+         SUMMARY contents:
+           FLAGS: Indicate type/status of an element:
+             xxxx
+             |||+---- Sharing status: (s)hared, (i)n share or not shared(-)
+             ||+----- if exported, whether it is (p)ermanent or (t)temporal
+             |+------ e/- wheter node is (e)xported
+             +-------- Type(d=folder,-=file,r=root,i=inbox,b=rubbish,x=unsupported)
+           VERS: Number of versions in a file
+           SIZE: Size of the file in bytes:
+           DATE: Modification date for files and creation date for folders:
+           NAME: name of the node
+ -h     Show human readable sizes in summary
+ -a     include extra information
+ --versions     show historical versions
+ 
+        You can delete all versions of a file with &quot;deleteversions&quot;
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="pwd" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453014.81" ts_lastsave="1570453022.36" unique_id="24">
+				<rich_text>Prints the current remote folder
+
+Usage: </rich_text>
+				<rich_text family="monospace">pwd</rich_text>
+				<rich_text>
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="lpwd" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453042.73" ts_lastsave="1570453047.7" unique_id="25">
+				<rich_text>Prints the current local folder for the interactive console
+
+Usage: </rich_text>
+				<rich_text family="monospace">lpwd</rich_text>
+				<rich_text>
+
+It will be used for uploads and downloads
+
+If not using interactive console, the current local folder will be
+ that of the shell executing mega comands
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="attr" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453075.68" ts_lastsave="1570453083.89" unique_id="26">
+				<rich_text>Lists/updates node attributes
+
+Usage: </rich_text>
+				<rich_text family="monospace">attr remotepath [-s attribute value|-d attribute]</rich_text>
+				<rich_text>
+
+Options:
+  -s attribute value    sets an attribute to a value
+  -d attribute          removes the attribute
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="du" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453104.04" ts_lastsave="1570453110.03" unique_id="27">
+				<rich_text>Prints size used by files/folders 
+
+Usage: </rich_text>
+				<rich_text family="monospace">du [-h] [--versions] [remotepath remotepath2 remotepath3 ... ]</rich_text>
+				<rich_text>
+
+remotepath can be a pattern (it accepts wildcards: ? and *. e.g.: f*00?.txt)
+
+Options:
+ -h             Human readable
+ --versions     Calculate size including all versions.
+
+You can remove all versions with `deleteversions` and list them with `ls --versions `
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="find" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453142.48" ts_lastsave="1570453168.62" unique_id="28">
+				<rich_text>Find nodes matching a pattern
+
+Usage: </rich_text>
+				<rich_text family="monospace">find [remotepath] [-l] [--pattern=PATTERN] [--mtime=TIMECONSTRAIN] [--size=SIZECONSTRAIN]</rich_text>
+				<rich_text>
+
+Options:
+  -l                     Prints file info
+  --pattern=PATTERN      Pattern to match (it accepts wildcards: ? and *. e.g.: f*00?.txt)
+  --mtime=TIMECONSTRAIN  Determines time constrains, in the form: [+-]TIMEVALUE
+                         TIMEVALUE may include hours(h), days(d), minutes(M), seconds(s), months(m) or years(y)
+                         Examples:
+                           &quot;+1m12d3h&quot; shows files modified before 1 month, 12 days and 3 hours the current moment
+                           &quot;-3h&quot; shows files modified within the last 3 hours
+                           &quot;-3d+1h&quot; shows files modified in the last 3 days prior to the last hour
+  --size=SIZECONSTRAIN   Determines size constrains, in the form: [+-]TIMEVALUE
+                         TIMEVALUE may include (B)ytes, (K)ilobytes, (M)egabytes, (G)igabytes &amp; (T)erabytes
+                         Examples:
+                           &quot;+1m12k3B&quot; shows files bigger than 1 Mega, 12 Kbytes and 3Bytes
+                           &quot;-3M&quot; shows files smaller than 3 Megabytes
+                           &quot;-4M+100K&quot; shows files smaller than 4 Mbytes and bigger than 100 Kbytes</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="mount" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453192.82" ts_lastsave="1570453198.31" unique_id="29">
+				<rich_text>Lists all the main nodes 
+
+Usage: </rich_text>
+				<rich_text family="monospace">mount</rich_text>
+				<rich_text>
+</rich_text>
+			</node>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="Moving/Copying Files" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453246.08" ts_lastsave="1570453750.61" unique_id="30">
+			<rich_text></rich_text>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="mkdir" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453262.13" ts_lastsave="1570453267.83" unique_id="31">
+				<rich_text>Creates a directory or a directories hierarchy 
+
+Usage: </rich_text>
+				<rich_text family="monospace">mkdir [-p] remotepath</rich_text>
+				<rich_text>
+
+Options:
+  -p     Allow recursive
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="cp" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453291.69" ts_lastsave="1570453297.6" unique_id="32">
+				<rich_text>Moves a file/folder into a new location (all remotes)
+
+Usage: </rich_text>
+				<rich_text family="monospace">cp srcremotepath dstremotepath|dstemail:</rich_text>
+				<rich_text>
+
+If the location exists and is a folder, the source will be copied there.
+If the location doesn't exist, the file/folder will be renamed to the destination name given.
+
+If &quot;dstemail:&quot; provided, the file/folder will be sent to that user's inbox (//in)
+ e.g: cp /path/to/file user@doma.in:
+Remember the trailing &quot;:&quot;, otherwise a file with the name of that user (&quot;user@doma.in&quot;) will be created
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="put" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453315.18" ts_lastsave="1570453320.39" unique_id="33">
+				<rich_text>Uploads files/folders to a remote folder 
+
+Usage: </rich_text>
+				<rich_text family="monospace">put  [-c] [-q] [--ignore-quota-warn] localfile [localfile2 localfile3 ...] [dstremotepath]</rich_text>
+				<rich_text>
+
+Options:
+  -c     Creates remote folder destination in case of not existing.
+  -q     queue upload: execute in the background. Don't wait for it to end'
+  --ignore-quota-warn    ignore quota surpassing warning.
+                          The upload will be attempted anyway.
+
+Notice that the dstremotepath can only be omitted when only one local path is provided.
+In such case, the current remote working dir will be the destination for the upload.
+Mind that using wildcards for local paths will result in multiple paths.
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="get" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453359.3" ts_lastsave="1570453369.35" unique_id="34">
+				<rich_text>Downloads a remote file/folder or a public link 
+
+Usage: </rich_text>
+				<rich_text family="monospace">get [-m] [-q] [--ignore-quota-warn] exportedlink#key|remotepath [localpath]</rich_text>
+				<rich_text>
+
+If the remotepath is a file, it will be downloaded to folder specified in localpath (or to the current folder if not specified).
+If the localpath (destination) already exists and is the same (by content) then nothing will be done. If it differs, it will create a new file appending &quot; (NUM)&quot;.
+If the remotepath or exportedlink is a folder, the folder and its entire contents will be downloaded into the destination folder.
+
+Options:
+  -q                    queue download: execute in the background. 
+  -m                    if the folder already exists, the contents will be merged with the downloaded one (preserving the existing files)
+  --ignore-quota-warn   ignore quota surpassing warning. The download will be attempted anyway.
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="preview" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453411.59" ts_lastsave="1570453422.84" unique_id="35">
+				<rich_text>To download/upload the preview of a file.
+
+Usage: preview [-s] remotepath localpath
+
+If no -s is inidicated, it will download the preview.
+
+Options:
+  -s     Sets the preview to the specified file
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="thumbnail" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453439.17" ts_lastsave="1570453445.73" unique_id="36">
+				<rich_text>o download/upload the thumbnail of a file.
+
+Usage: thumbnail [-s] remotepath localpath
+
+If no -s is inidicated, it will download the thumbnail.
+
+Options:
+  -s     Sets the thumbnail to the specified file
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="mv" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453481.64" ts_lastsave="1570453487.22" unique_id="37">
+				<rich_text>Copies files/folders to a new location in your MEGA account
+
+Usage: </rich_text>
+				<rich_text family="monospace">mv srcremotepath [srcremotepath2 srcremotepath3 ..] dstremotepath</rich_text>
+				<rich_text>
+
+If the destination remote path exists and is a folder, the source will be copied there.
+If the destination remote path doesn't exist, the source will be renamed to the given dstremotepath leaf name.
+
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="rm" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453516.89" ts_lastsave="1570453522.73" unique_id="38">
+				<rich_text>Deletes a remote file/folder
+
+Usage: </rich_text>
+				<rich_text family="monospace">rm [-r] [-f] remotepath</rich_text>
+				<rich_text>
+
+Options:
+  -r     Delete recursively (for folders)
+  -f     Force (no asking)
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="transfers" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453550.61" ts_lastsave="1570454974.91" unique_id="39">
+				<rich_text>List or operate with queued transfers 
+
+Usage: </rich_text>
+				<rich_text family="monospace">transfers [-c TAG|-a] | [-r TAG|-a]  | [-p TAG|-a] [--only-downloads | --only-uploads] [SHOWOPTIONS]</rich_text>
+				<rich_text>
+
+If executed without option it will list the first 10 tranfers
+
+Options:
+  -c (TAG|-a)            Cancel transfer with TAG (or all with -a)
+  -p (TAG|-a)            Pause transfer with TAG (or all with -a)
+  -r (TAG|-a)            Resume transfer with TAG (or all with -a)
+  -only-uploads          Show/Operate only upload transfers
+  -only-downloads        Show/Operate only download transfers
+
+Show options:
+  -show-syncs            Show synchronization transfers
+  -show-completed        Show completed transfers
+  -only-completed        Show only completed download
+  --limit=N              Show only first N transfers
+  --path-display-size=N  Use a fixed size of N characters for paths
+</rich_text>
+				<node custom_icon_id="0" foreground="" is_bold="False" name="transfers example" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454974.91" ts_lastsave="1570454980.22" unique_id="68">
+					<rich_text>eg.email@example.co.nz:/tmp-test/Mega.dir$ </rich_text>
+					<rich_text weight="heavy">transfers</rich_text>
+					<rich_text>
+DIR/SYNC TAG  SOURCEPATH                         DESTINYPATH                              PROGRESS           STATE
+ U     17361 \\?\C:\Users\ME\...ebug\megaapi.obj /tmp-test/Mega.dir/Mega.dir/Debug    100.00% of 2016.62 KB  ACTIVE
+ U     17362 \\?\C:\Users\ME\...megaapi_impl.obj /tmp-test/Mega.dir/Mega.dir/Debug     13.64% of   13.85 MB  ACTIVE
+ U     17363 \\?\C:\Users\ME\...g\megaclient.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of   15.46 MB  QUEUED
+ U     17364 \\?\C:\Users\ME\..._http_parser.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of   85.15 KB  QUEUED
+ U     17365 \\?\C:\Users\ME\...ega_utf8proc.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of  312.44 KB  QUEUED
+ U     17366 \\?\C:\Users\ME\...\mega_zxcvbn.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of  589.88 KB  QUEUED
+ U     17367 \\?\C:\Users\ME\...ir\Debug\net.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of    3.20 MB  QUEUED
+ U     17368 \\?\C:\Users\ME\...r\Debug\node.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of    3.73 MB  QUEUED
+ U     17369 \\?\C:\Users\ME\...ntactrequest.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of  352.22 KB  QUEUED
+ U     17370 \\?\C:\Users\ME\...\Debug\proxy.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of  203.57 KB  QUEUED
+ ...  Showing first 10 transfers ...
+eg.email@example.co.nz:/tmp-test/Mega.dir$ </rich_text>
+					<rich_text weight="heavy">transfers -p 17367</rich_text>
+					<rich_text>
+Transfer 17367 paused successfully.
+eg.email@example.co.nz:/tmp-test/Mega.dir$ </rich_text>
+					<rich_text weight="heavy">transfers -c 17370</rich_text>
+					<rich_text>
+Transfer 17370 cancelled successfully.
+eg.email@example.co.nz:/tmp-test/Mega.dir$ </rich_text>
+					<rich_text weight="heavy">transfers</rich_text>
+					<rich_text>
+DIR/SYNC TAG  SOURCEPATH                         DESTINYPATH                              PROGRESS           STATE
+ U     17362 \\?\C:\Users\ME\...megaapi_impl.obj /tmp-test/Mega.dir/Mega.dir/Debug     96.32% of   13.85 MB  ACTIVE
+ U     17363 \\?\C:\Users\ME\...g\megaclient.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.20% of   15.46 MB  ACTIVE
+ U     17364 \\?\C:\Users\ME\..._http_parser.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of   85.15 KB  QUEUED
+ U     17365 \\?\C:\Users\ME\...ega_utf8proc.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of  312.44 KB  QUEUED
+ U     17366 \\?\C:\Users\ME\...\mega_zxcvbn.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of  589.88 KB  QUEUED
+ U     17367 \\?\C:\Users\ME\...ir\Debug\net.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of    3.20 MB  PAUSED
+ U     17368 \\?\C:\Users\ME\...r\Debug\node.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of    3.73 MB  QUEUED
+ U     17369 \\?\C:\Users\ME\...ntactrequest.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of  352.22 KB  QUEUED
+ U     17371 \\?\C:\Users\ME\...pubkeyaction.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of  355.75 KB  QUEUED
+ U     17372 \\?\C:\Users\ME\...ebug\request.obj /tmp-test/Mega.dir/Mega.dir/Debug      0.00% of  933.14 KB  QUEUED
+ ...  Showing first 10 transfers ...
+eg.email@example.co.nz:/tmp-test/Mega.dir$</rich_text>
+				</node>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="speedlimit" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453581.53" ts_lastsave="1570453587.34" unique_id="40">
+				<rich_text>Displays/modifies upload/download rate limits
+
+Usage: </rich_text>
+				<rich_text family="monospace">speedlimit [-u|-d] [-h] [NEWLIMIT]</rich_text>
+				<rich_text>
+
+NEWLIMIT establish the new limit in size per second (0 = no limit)
+NEWLIMIT may include (B)ytes, (K)ilobytes, (M)egabytes, (G)igabytes &amp; (T)erabytes.
+Examples: &quot;1m12k3B&quot; &quot;3M&quot;. If no units are given, bytes are assumed.
+
+Options:
+  -d     Download speed limit
+  -u     Upload speed limit
+  -h     Human readable
+
+Notice: these limits are saved for the next time you execute MEGAcmd server.  They will be removed if you logout.</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="sync" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453613.82" ts_lastsave="1570454927.46" unique_id="41">
+				<rich_text>Sets up synchronisation between a local folder and one in your MEGA account.  (</rich_text>
+				<rich_text link="webs https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md#sync-example">example</rich_text>
+				<rich_text>)
+
+Usage: </rich_text>
+				<rich_text family="monospace">sync [localpath dstremotepath| [-dsr] [ID|localpath]</rich_text>
+				<rich_text>
+
+If no argument is provided, it lists current configured synchronizations
+
+If provided local and remote paths, it will start synchronizing a local folder into a remote folder
+
+If an ID/local path is provided, it will list such synchronization unless an option is specified.
+
+Options:
+  -d ID|localpath deletes a synchronization
+  -s ID|localpath stops(pauses) a synchronization
+  -r ID|localpath resumes a synchronization
+  --path-display-size=N  Use a fixed size of N characters for paths
+
+Syncs are associated with your Session, so logging out will cancel them.
+</rich_text>
+				<node custom_icon_id="0" foreground="" is_bold="False" name="sync example" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454927.46" ts_lastsave="1570454932.91" unique_id="67">
+					<rich_text>email_1@example.co.nz:/$ </rich_text>
+					<rich_text weight="heavy">sync c:\Go go-backup/</rich_text>
+					<rich_text>
+email_1@example.co.nz:/$ </rich_text>
+					<rich_text weight="heavy">sync</rich_text>
+					<rich_text>
+ID LOCALPATH                                  REMOTEPATH                                 ActState   SyncState     SIZE  FILES   DIRS
+ 0 \\?\c:\Go                                  /go-backup                                 InitScan   Syncing   119.13 KB     10     97 
+email_1@example.co.nz:/$ </rich_text>
+					<rich_text weight="heavy">sync</rich_text>
+					<rich_text>
+ID LOCALPATH                                  REMOTEPATH                                 ActState   SyncState     SIZE  FILES   DIRS
+ 0 \\?\c:\Go                                  /go-backup                                 InitScan   Syncing   61.22 MB   1252    463
+email_1@example.co.nz:/$ </rich_text>
+					<rich_text weight="heavy">sync</rich_text>
+					<rich_text>
+ID LOCALPATH                                  REMOTEPATH                                 ActState   SyncState     SIZE  FILES   DIRS
+ 0 \\?\c:\Go                                  /go-backup                                 InitScan   Syncing   232.94 MB   4942    773 
+email_1@example.co.nz:/$ </rich_text>
+					<rich_text weight="heavy">sync</rich_text>
+					<rich_text>
+ID LOCALPATH                                  REMOTEPATH                                 ActState   SyncState     SIZE  FILES   DIRS
+ 0 \\?\c:\Go                                  /go-backup                                 Active     Synced    285.91 MB   7710   1003 
+ 
+[then on a windows cmd prompt] 
+C:\Users\ME&gt;</rich_text>
+					<rich_text weight="heavy">rmdir /s c:\go\blog</rich_text>
+					<rich_text>
+c:\go\blog, Are you sure (Y/N)? </rich_text>
+					<rich_text weight="heavy">Y</rich_text>
+					<rich_text>
+
+[back in MEGAcmd- update has been applied to MEGA already] 
+email_1@example.co.nz:/$ </rich_text>
+					<rich_text weight="heavy">sync</rich_text>
+					<rich_text>
+ID LOCALPATH                                  REMOTEPATH                                 ActState   SyncState     SIZE  FILES   DIRS
+ 0 \\?\c:\Go                                  /go-backup                                 Active     Synced    268.53 MB   7306    961 </rich_text>
+				</node>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="exclude" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453649.07" ts_lastsave="1570453655.23" unique_id="42">
+				<rich_text>Manages exclusions in syncs.
+
+Usage: </rich_text>
+				<rich_text family="monospace">exclude [(-a|-d) pattern1 pattern2 pattern3 [--restart-syncs]]</rich_text>
+				<rich_text>
+
+Options:
+ -a pattern1 pattern2 ...       adds pattern(s) to the exclusion list
+                                          (* and ? wildcards allowed)
+ -d pattern1 pattern2 ...       deletes pattern(s) from the exclusion list
+ --restart-syncs        Try to restart synchronizations.
+
+Changes will not be applied immediately to actions being performed in active syncs.
+After adding/deleting patterns, you might want to:
+ a) disable/reenable synchronizations manually
+ b) restart MEGAcmd server
+ c) use --restart-syncs flag. Caveats:
+  This will cause active transfers to be restarted
+  In certain cases --restart-syncs might be unable to re-enable a synchronization.
+  In such case, you will need to manually resume it or restart MEGAcmd server.
+  
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="backup" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453671.62" ts_lastsave="1570454461.71" unique_id="43">
+				<rich_text>Sets up or controls backups. 
+
+Usage: </rich_text>
+				<rich_text family="monospace">backup (localpath remotepath --period=&quot;PERIODSTRING&quot;  --num-backups=N  | [-lhda] [TAG|localpath] [--period=&quot;PERIODSTRING&quot;]  [--num-backups=N])</rich_text>
+				<rich_text>
+
+This command can be used to configure which folders to back up, and how often to do so.
+
+If no argument is given it will list the configured backups.
+To get extra info on backups use -l or -h (see Options below)
+
+When a backup of a folder (localfolder) is established in a remote folder (remotepath)
+ MEGAcmd will create subfolder within the remote path with names like: &quot;localfoldername_bk_TIME&quot;
+ which shall contain a backup of the local folder at that specific time
+In order to configure a backup you need to specify the local and remote paths,
+the period and max number of backups to store (see Configuration Options below).
+Once configured, you can see extended info asociated to the backup (See Display Options)
+Notice that MEGAcmd server need to be running for backups to be created.
+
+Display Options:
+-l      Show extended info: period, max number, next scheduled backup
+         or the status of current/last backup
+-h      Show history of created backups
+        Backup states:
+        While a backup is being performed, the backup will be considered and labeled as ONGOING
+        If a transfer is cancelled or fails, the backup will be considered INCOMPLETE
+        If a backup is aborted (see -a), all the transfers will be canceled and the backup be ABORTED
+        If MEGAcmd server stops during a transfer, it will be considered MISCARRIED
+          Notice that currently when MEGAcmd server is restarted, ongoing and scheduled transfers
+          will be carried out nevertheless.
+        If MEGAcmd server is not running when a backup is scheduled and the time for the next one has already arrived, an empty BACKUP will be created with state SKIPPED
+        If a backup(1) is ONGOING and the time for the next backup(2) arrives, it won't start untill the previous one(1)
+         is completed, and if by the time the first one(1) ends the time for the next one(3) has already arrived,
+         an empty BACKUP(2) will be created with state SKIPPED
+ --path-display-size=N  Use a fixed size of N characters for paths
+
+Configuration Options:
+--period=&quot;PERIODSTRING&quot; Period: either time in TIMEFORMAT (see below) or a cron like expresisions
+                         Cron like period is formatted as follows
+                          - - - - - -
+                          | | | | | |
+                          | | | | | |
+                          | | | | | +---- Day of the Week   (range: 1-7, 1 standing for Monday)
+                          | | | | +------ Month of the Year (range: 1-12)
+                          | | | +-------- Day of the Month  (range: 1-31)
+                          | | +---------- Hour              (range: 0-23)
+                          | +------------ Minute            (range: 0-59)
+                          +-------------- Second            (range: 0-59)
+                         examples:
+                          - daily at 04:00:00 (UTC): &quot;0 0 4 * * *&quot;
+                          - every 15th day at 00:00:00 (UTC) &quot;0 0 0 15 * *&quot;
+                          - mondays at 04.30.00 (UTC): &quot;0 30 4 * * 1&quot;
+                         TIMEFORMAT can be expressed in hours(h), days(d),
+                           minutes(M), seconds(s), months(m) or years(y)
+                           e.g. &quot;1m12d3h&quot; indicates 1 month, 12 days and 3 hours
+                         Notice that this is an uncertain measure since not all months
+                          last the same and Daylight saving time changes are not considered
+                          If possible use a cron like expresion
+                         Notice: regardless of the period expresion, the first time you establish a backup,
+                          it will be created immediately
+--num-backups=N Maximum number of backups to store
+                         After creating the backup (N+1) the oldest one will be deleted
+                         That might not be true in case there are incomplete backups:
+                          in order not to lose data, at least one COMPLETE backup will be kept
+Use backup TAG|localpath --option=VALUE to modify existing backups
+
+Management Options:
+-d TAG|localpath        Removes a backup by its TAG or local path
+                         Folders created by backup won't be deleted
+-a TAG|localpath        Aborts ongoing backup
+
+Syncs are associated with your Session, so logging out will cancel them.
+
+Caveat: This functionality is in BETA state. If you experience any issue with this, please contact: support@mega.nz</rich_text>
+				<node custom_icon_id="0" foreground="" is_bold="False" name="backup example" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454461.71" ts_lastsave="1570454470.7" unique_id="62">
+					<rich_text>eg.email@example.co.nz:/$ </rich_text>
+					<rich_text weight="heavy">backup c:/cmake /cmake-backup --period=&quot;0 0 4 * * *&quot; --num-backups=3</rich_text>
+					<rich_text>
+Backup established: c:/cmake into /cmake-backup period=&quot;0 0 4 * * *&quot; Number-of-Backups=3
+eg.email@example.co.nz:/$ </rich_text>
+					<rich_text weight="heavy">backup</rich_text>
+					<rich_text>
+TAG   LOCALPATH                                               REMOTEPARENTPATH                                                STATUS
+166   \\?\c:\cmake                                            /cmake-backup                                                  ONGOING
+eg.email@example.co.nz:/$ </rich_text>
+					<rich_text weight="heavy">backup -h</rich_text>
+					<rich_text>
+TAG   LOCALPATH                                               REMOTEPARENTPATH                                                STATUS
+166   \\?\c:\cmake                                            /cmake-backup                                                  ONGOING
+   -- SAVED BACKUPS --
+  NAME                                                    DATE                    STATUS  FILES FOLDERS
+  cmake_bk_20180426133300                                 26Apr2018 13:33:00     ONGOING      0      92
+eg.email@example.co.nz:/$
+
+
+</rich_text>
+					<rich_text scale="h1">MEGA-BACKUPS - Backing folders with MEGAcmd</rich_text>
+					<rich_text>
+This is a brief tutorial on how to configure backups.
+Notice: the commands listed here assume you are using the interactive  interaction mode: they are supposed to be executed within MEGAcmdShell.
+
+
+
+</rich_text>
+					<rich_text scale="h2">Creation</rich_text>
+					<rich_text>
+Example: backup /path/mega/folder /remote/path --period=&quot;0 0 4 * * *&quot; --num-backups=10
+This will configure a backup of &quot;myfolder&quot; into /remote/path that will be carried out at 4:00 A.M. (UTC) every day. It will store the last 10 copies. Notice a first backup will be carried out immediately. In this example we are using cron-time expresions. You can find extra info on those using &quot;backup --help&quot;.
+Backups will be stored as:
+</rich_text>
+					<rich_text family="monospace"> /remote/path/myfolder_bk_TIME1
+ /remote/path/myfolder_bk_TIME2
+ /remote/path/myfolder_bk_TIME3
+ ...
+</rich_text>
+					<rich_text>
+
+
+</rich_text>
+					<rich_text scale="h2">Listing</rich_text>
+					<rich_text>
+You can list the backups configured typing </rich_text>
+					<rich_text family="monospace">backup</rich_text>
+					<rich_text>:
+</rich_text>
+					<rich_text family="monospace">TAG   LOCALPATH                 REMOTEPARENTPATH                  STATUS
+4     /path/mega/folder            /remote/path                   ACTIVE
+</rich_text>
+					<rich_text>Notice the TAG. You can use it to refer to the backup if you wan to change its configuration or delete/abort it.
+
+
+
+</rich_text>
+					<rich_text scale="h3">Extra info</rich_text>
+					<rich_text>
+If you type &quot;backup -l&quot; you will see extra information concerning the backup. Here, you will see when the next backup is scheduled for:
+</rich_text>
+					<rich_text family="monospace">TAG   LOCALPATH                 REMOTEPARENTPATH                  STATUS
+4     /path/mega/folder            /remote/path                  ONGOING
+  Max Backups:   4
+  Period:         &quot;0 0 4 * * *&quot;
+  Next backup scheduled for: Fri, 19 Jan 2018 04:00:00 +0000
+   -- CURRENT/LAST BACKUP --
+  FILES UP/TOT     FOLDERS CREATED    PROGRESS
+       22/33                0         57.86/57.86 KB  1.27%
+
+</rich_text>
+					<rich_text>Also, you can see the progress of the current backup (or the last one is there is no backup being performed a the moment)
+
+
+
+</rich_text>
+					<rich_text scale="h3">Backup history:</rich_text>
+					<rich_text>
+With &quot;backup -h&quot; you will be able to see the existing backups with their state and start time:
+</rich_text>
+					<rich_text family="monospace">TAG   LOCALPATH                 REMOTEPARENTPATH                  STATUS
+4     /path/mega/folder            /remote/path                  ONGOING
+   -- SAVED BACKUPS --
+  NAME                             DATE                    STATUS  FILES FOLDERS
+  myfolder_bk_20180115175811       15Jan2018 17:58:11    COMPLETE     33      10
+  myfolder_bk_20180116182611       16Jan2018 18:26:11    COMPLETE     33      10
+  myfolder_bk_20180117182711       17Jan2018 18:27:11     ABORTED     13      10
+  myfolder_bk_20180118182911       18Jan2018 18:29:11     ONGOING     23      10
+</rich_text>
+					<rich_text>Tip: If you are using linux/mac you can monitor the status actively in non-interactive mode with:
+</rich_text>
+					<rich_text family="monospace">watch mega-backup -lh
+</rich_text>
+					<rich_text>
+
+
+</rich_text>
+					<rich_text scale="h1">Control:</rich_text>
+					<rich_text>
+
+
+
+</rich_text>
+					<rich_text scale="h2">Abort</rich_text>
+					<rich_text>
+You can abort an ONGOING backup using its tag or it's local path. e.g.:
+</rich_text>
+					<rich_text family="monospace">backup -a 4
+</rich_text>
+					<rich_text>This will cancel all transfers and set the backup as ABORTED
+
+
+
+</rich_text>
+					<rich_text scale="h2">Delete</rich_text>
+					<rich_text>
+Similarly you can remove a backup, to no longer backup that folder with:
+</rich_text>
+					<rich_text family="monospace">backup -d /path/mega/folder
+</rich_text>
+					<rich_text>This will not remove the existing backups wich will be available in MEGA.
+
+
+
+</rich_text>
+					<rich_text scale="h2">Change configuration</rich_text>
+					<rich_text>
+Similarly you can change the period or the number of backups to keep with:
+</rich_text>
+					<rich_text family="monospace">backup 4 --period=2h
+</rich_text>
+					<rich_text>This will set our backup with TAG=4 to have a period of 2 hours.
+</rich_text>
+					<rich_text family="monospace">backup /path/mega/folder --num-backups=1
+</rich_text>
+					<rich_text>This will configure the backup to only keep one instance. Notice that in order not to lose data, older instances will not be deleted until the max number of backups is passed.
+</rich_text>
+				</node>
+			</node>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="Sharing" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453750.63" ts_lastsave="1570453952.75" unique_id="44">
+			<rich_text></rich_text>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="export" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453812.19" ts_lastsave="1570453817.97" unique_id="45">
+				<rich_text>Prints/Modifies the status of current exports 
+
+Usage: </rich_text>
+				<rich_text family="monospace">export [-d|-a [--expire=TIMEDELAY] [-f]] [remotepath]</rich_text>
+				<rich_text>
+
+Options:
+ -a     Adds an export (or modifies it if existing)
+ --expire=TIMEDELAY     Determines the expiration time of a node.
+                           It indicates the delay in hours(h), days(d),
+                           minutes(M), seconds(s), months(m) or years(y)
+                           e.g. &quot;1m12d3h&quot; establish an expiration time 1 month,
+                           12 days and 3 hours after the current moment
+ -f     Implicitly accept copyright terms (only shown the first time an export is made)
+        MEGA respects the copyrights of others and requires that users of the MEGA cloud service
+        comply with the laws of copyright.
+        You are strictly prohibited from using the MEGA cloud service to infringe copyrights.
+        You may not upload, download, store, share, display, stream, distribute, email, link to,
+        transmit or otherwise make available any files, data or content that infringes any copyright
+        or other proprietary rights of any person or entity.
+ -d     Deletes an export
+
+If a remote path is given it'll be used to add/delete or in case of no option selected, it will display all the exports existing in the tree of that path
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="import" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453858.67" ts_lastsave="1570453865.69" unique_id="46">
+				<rich_text>Imports the contents of a remote link into your MEGA account or to a local folder.
+
+Usage: </rich_text>
+				<rich_text family="monospace">import exportedfilelink#key [remotepath]</rich_text>
+				<rich_text>
+If no remote path is provided, the current local folder will be used
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="share" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453886.45" ts_lastsave="1570453891.8" unique_id="47">
+				<rich_text>Prints/Modifies the status of current shares
+
+Usage: </rich_text>
+				<rich_text family="monospace">share [-p] [-d|-a --with=user@email.com [--level=LEVEL]] [remotepath]</rich_text>
+				<rich_text>
+
+Options:
+  -p     Show pending shares
+  --with=email   Determines the email of the user to [no longer] share with
+  -d     Stop sharing with the selected user
+  -a     Adds a share (or modifies it if existing)
+  --level=LEVEL  Level of acces given to the user
+                0: Read access
+                1: Read and write
+                2: Full access
+                3: Owner access
+
+If a remote path is given it'll be used to add/delete or in case of no option selected, it will display all the shares existing in the tree of that path
+
+When sharing a folder with a user that is not a contact (see &quot;users --help&quot;) the share will be in a pending state. You can list pending shares with `share -p`. Your contact will need to accept your invitation (see [`ipc`](#ipc))
+
+If someone has shared something with you, it will be listed as a root folder.
+Use [`mount`](#mount) to list folders shared with you</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="webdav" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453917.15" ts_lastsave="1570455073.99" unique_id="48">
+				<rich_text>Configures a WEBDAV server to serve a location in MEGA.  You can use  feature to make a folder in your MEGA account appear as a virtual drive,  or to stream files.
+
+Usage: </rich_text>
+				<rich_text family="monospace">webdav [ [-d] remotepath [--port=PORT] [--public] [--tls --certificate=/path/to/certificate.pem --key=/path/to/certificate.key]]</rich_text>
+				<rich_text>
+
+This can also be used for streaming files. The server will be running as long as MEGAcmd Server is.
+If no argument is given, it will list the webdav enabled locations.
+
+Options:
+  --d            Stops serving that location
+  --public       *Allow access from outside localhost
+  --port=PORT    *Port to serve. DEFAULT= 4443
+  --tls          *Serve with TLS (HTTPS)
+  --certificate=/path/to/certificate.pem *Path to PEM formated certificate
+  --key=/path/to/certificate.key *Path to PEM formated key
+
+*If you serve more than one location, these parameters will be ignored and use those of the first location served.
+
+Webdav setup is associated with your Session, so logging out will cancel them.
+
+Caveat: This functionality is in BETA state. If you experience any issue with this, please contact: support@mega.nz
+</rich_text>
+				<node custom_icon_id="0" foreground="" is_bold="False" name="webdav example" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570455074.0" ts_lastsave="1570455079.57" unique_id="69">
+					<rich_text>eg.email@example.co.nz:/$ </rich_text>
+					<rich_text weight="heavy">webdav myfile.tif --port=1024</rich_text>
+					<rich_text>
+Serving via webdav myfile.tif: http://127.0.0.1:1024/5mYHQT4B/myfile.tif
+eg.email@example.co.nz:/$ </rich_text>
+					<rich_text weight="heavy">webdav</rich_text>
+					<rich_text>
+WEBDAV SERVED LOCATIONS:
+/myfile.tif: http://127.0.0.1:1024/5mYHQT4B/myfile.tif
+eg.email@example.co.nz:/$ </rich_text>
+					<rich_text weight="heavy">webdav -d myfile.tif</rich_text>
+					<rich_text>
+myfile.tif no longer served via webdav
+eg.email@example.co.nz:/$</rich_text>
+				</node>
+			</node>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="Misc" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453952.75" ts_lastsave="1570454671.35" unique_id="49">
+			<rich_text></rich_text>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="version" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570453965.34" ts_lastsave="1570454005.4" unique_id="50">
+				<rich_text>Prints MEGAcmd versioning and extra info
+
+Usage: </rich_text>
+				<rich_text family="monospace">version [-l][-c]</rich_text>
+				<rich_text>
+
+Options:
+  -c     Shows changelog for the current version
+  -l     Show extended info: MEGA SDK version and features enabled
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="deleteversions" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454026.07" ts_lastsave="1570454033.26" unique_id="51">
+				<rich_text>Deletes previous versions of files, keeping the current version.
+
+Usage: </rich_text>
+				<rich_text family="monospace">deleteversions [-f] (--all | remotepath1 remotepath2 ...)</rich_text>
+				<rich_text>
+
+This will permanently delete all historical versions of a file.
+The current version of the file will remain.
+Note: any file version shared to you from a contact will need to be deleted by them.
+
+Options:
+ -f     Force (no asking)
+ --all  Delete versions of all nodes. This will delete the version histories of all files (not current files).
+
+To see versions of a file use `ls --versions`.
+To see space occupied by file versions use `du --versions`.
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="unicode" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454060.01" ts_lastsave="1570454066.07" unique_id="52">
+				<rich_text>Toggle unicode input enabled/disabled in interactive shell
+Usage: </rich_text>
+				<rich_text family="monospace">unicode</rich_text>
+				<rich_text>
+
+Unicode mode is experimental, you might experience some issues interacting with the console (e.g. history navigation fails).
+Type &quot;help --unicode&quot; for further info.</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="reload" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454089.23" ts_lastsave="1570454094.63" unique_id="53">
+				<rich_text>Forces re-downloading the Local Cache information from MEGA.
+
+Usage: </rich_text>
+				<rich_text family="monospace">reload</rich_text>
+				<rich_text>
+
+It will also resume synchronizations.
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="help" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454117.1" ts_lastsave="1570454125.32" unique_id="54">
+				<rich_text>Prints list of commands
+
+Usage: </rich_text>
+				<rich_text family="monospace">help [-f]</rich_text>
+				<rich_text>
+
+Options:
+  -f     Include a brief description of the commands
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="https" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454141.58" ts_lastsave="1570454175.21" unique_id="55">
+				<rich_text>Shows if HTTPS is used for transfers. Use </rich_text>
+				<rich_text family="monospace">https on</rich_text>
+				<rich_text> to enable it.
+
+Usage: </rich_text>
+				<rich_text family="monospace">https [on|off]</rich_text>
+				<rich_text>
+
+HTTPS is not necesary since all data is already encrypted before being stored or transfered anyway.
+Enabling it will increase CPU usage and add network overhead.
+
+This setting is ephemeral: it will reset for the next time you open MEGAcmd
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="clear" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454175.21" ts_lastsave="1570454180.19" unique_id="56">
+				<rich_text>Clear screen
+
+Usage: </rich_text>
+				<rich_text family="monospace">clear</rich_text>
+				<rich_text>
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="log" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454199.05" ts_lastsave="1570454203.53" unique_id="57">
+				<rich_text>Prints/Modifies the setting for how detailed log output is.
+
+Usage: log [-sc] level
+
+Options:
+  -c     CMD log level (higher level messages).
+         Messages captured by MEGAcmd server.
+  -s     SDK log level (lower level messages).
+         Messages captured by the engine and libs
+
+Regardless of the log level of the  interactive shell, you can increase the amount of information given by any command by passing `-v` (`-vv`, `-vvv`, ...)
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="debug" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454229.8" ts_lastsave="1570454235.55" unique_id="58">
+				<rich_text>Enters debugging mode (HIGHLY VERBOSE)
+
+Usage: </rich_text>
+				<rich_text family="monospace">debug</rich_text>
+				<rich_text>
+
+For a finer control of log level see [`log`](#log)
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="exit" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454256.05" ts_lastsave="1570454268.7" unique_id="59">
+				<rich_text>Quits MEGAcmd
+Usage: </rich_text>
+				<rich_text family="monospace">exit [--only-shell]</rich_text>
+				<rich_text>
+
+By default this command will exit both the interactive shell and the command server.
+To only exit current shell and keep server running, use `exit --only-shell`
+
+Exiting the server does not cancel the session, and the encrypted local cache of your account is kept on your PC.
+The session will be resumed when the service is restarted.
+</rich_text>
+			</node>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="Example" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454671.35" ts_lastsave="1570454704.45" unique_id="63">
+			<rich_text></rich_text>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="signup confirm invite showpcr ipc users userattr" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454704.47" ts_lastsave="1570454715.14" unique_id="64">
+				<rich_text>
+</rich_text>
+				<rich_text scale="h3">signup confirm invite showpcr ipc users userattr example</rich_text>
+				<rich_text>
+MEGA CMD&gt; </rich_text>
+				<rich_text weight="heavy">signup eg.email_1@example.co.nz --name=&quot;test1&quot;</rich_text>
+				<rich_text>
+New Password:
+Retype New Password:
+Account  created succesfully. You will receive a confirmation link. Use &quot;confirm&quot; with the provided link to confirm that account
+MEGA CMD&gt; </rich_text>
+				<rich_text weight="heavy">confirm https://mega.nz/#confirmQFSfjtUkExc5M2Us6q5d-klx60RfxVbxjhk eg.email_1@example.co.nz</rich_text>
+				<rich_text>
+Password:
+Account eg.email_1@example.co.nz confirmed succesfully. You can login with it now
+MEGA CMD&gt; </rich_text>
+				<rich_text weight="heavy">signup eg.email_2@example.co.nz --name=&quot;test2&quot;</rich_text>
+				<rich_text>
+New Password:
+Retype New Password:
+Account  created succesfully. You will receive a confirmation link. Use &quot;confirm&quot; with the provided link to confirm that account
+MEGA CMD&gt; </rich_text>
+				<rich_text weight="heavy">confirm https://mega.nz/#confirmcz7Ss68ChhMKk8WEFTQCqLMHJg8esAEEpQE eg.email_2@example.co.nz</rich_text>
+				<rich_text>
+Password:
+Account eg.email_2@example.co.nz confirmed succesfully. You can login with it now
+MEGA CMD&gt; </rich_text>
+				<rich_text weight="heavy">login eg.email_1@example.co.nz</rich_text>
+				<rich_text>
+Password:
+[API:info: 23:19:14] Fetching nodes ...
+[API:info: 23:19:17] Loading transfers from local cache
+[API:info: 23:19:17] Login complete as eg.email_1@example.co.nz
+MEGA CMD&gt;
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">invite eg.email_2@example.co.nz</rich_text>
+				<rich_text>
+Invitation to user: eg.email_2@example.co.nz sent
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">showpcr</rich_text>
+				<rich_text>
+Outgoing PCRs:
+ eg.email_2@example.co.nz  (id: 47Xhz6wvVTk, creation: Thu, 26 Apr 2018 11:20:09 +1200, modification: Thu, 26 Apr 2018 11:20:09 +1200)
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">logout</rich_text>
+				<rich_text>
+Logging out...
+eg.email_1@example.co.nz:/$
+MEGA CMD&gt; </rich_text>
+				<rich_text weight="heavy">login eg.email_2@example.co.nz</rich_text>
+				<rich_text>
+Password:
+[API:info: 23:21:10] Fetching nodes ...
+[API:info: 23:21:12] Loading transfers from local cache
+[API:info: 23:21:12] Login complete as eg.email_2@example.co.nz
+MEGA CMD&gt;
+eg.email_2@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">showpcr</rich_text>
+				<rich_text>
+Incoming PCRs:
+ eg.email_1@example.co.nz  (id: 47Xhz6wvVTk, creation: Thu, 26 Apr 2018 11:20:09 +1200, modification: Thu, 26 Apr 2018 11:20:09 +1200)
+eg.email_2@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">ipc 47Xhz6wvVTk -a</rich_text>
+				<rich_text>
+Accepted invitation by eg.email_1@example.co.nz
+eg.email_2@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">users</rich_text>
+				<rich_text>
+eg.email_1@example.co.nz, visible since Thu, 26 Apr 2018 11:22:02 +1200
+eg.email_2@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">userattr --user=eg.email_1@example.co.nz</rich_text>
+				<rich_text>
+        firstname = test1
+        ed25519 = 5Xl2-mUtsZkaATmSS88Ncepju5805uw66Hfdh_-SwpE
+        cu25519 = ejoYtpaJIZvlpmPsYviIa6tNvPTdVjfkYf9G1k8PKgM
+        rsa = AAAAAFrhDPPMS1AXAhJwScpJ_GKqFUJ42uIIcwxLp5RIalkWtsa5j87u2LFhoZlI_rHIzGXrdsbywgs7Msisw0CjodrtwtME
+        cu255 = AAAAAFrhDPPWUOP2tNByV72zU4M3EKNoddyVCT13VkkouMldniR2UZtLrPjUjUeOZOLvOL7H1C0W0Q_b3QqYSvAKo775pUwD
+eg.email_2@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">showpcr</rich_text>
+				<rich_text>
+eg.email_2@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">logout</rich_text>
+				<rich_text>
+Logging out...
+MEGA CMD&gt; </rich_text>
+				<rich_text weight="heavy">login eg.email_1@example.co.nz</rich_text>
+				<rich_text>
+Password:
+[API:info: 23:24:26] Fetching nodes ...
+[API:info: 23:24:27] Loading transfers from local cache
+[API:info: 23:24:27] Login complete as eg.email_1@example.co.nz
+MEGA CMD&gt;
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">showpcr</rich_text>
+				<rich_text>
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">users</rich_text>
+				<rich_text>
+eg.email_2@example.co.nz, visible
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">userattr --user=eg.email_2@example.co.nz</rich_text>
+				<rich_text>
+        firstname = test2
+        ed25519 = M7SLy2RajwUAvynxJQaVkhe6hxGpbwJmvve3dgl8B1o
+        cu25519 = VaXluGS2c5xbo0xOHHJciqLRxwMaWZHVK8iuxtlCBTk
+        rsa = AAAAAFrhDWemabQ4JAOtP7zcoy6m74PsFTFCbj04Zh4G8K_TZB5Sm9T5Xj9CXYzwWnpfRd1McPdDouKdsASQ6Er7i4Y4LpEA
+        cu255 = AAAAAFrhDWcXE_7AHZmvxk5Hk0G7V65UnvFO42tb1gM9SYy3BpsMCas0X-pbqkYwf6_2eBG-ZLvkonGfXB3DWonWNvnVehIB
+eg.email_1@example.co.nz:/$
+</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="login logout whoami mkdir cd get put du mount" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454757.56" ts_lastsave="1570454765.84" unique_id="65">
+				<rich_text>MEGA CMD&gt; </rich_text>
+				<rich_text weight="heavy">login eg.email_1@example.co.nz</rich_text>
+				<rich_text>
+Password:
+[API:info: 23:43:14] Fetching nodes ...
+[API:info: 23:43:14] Loading transfers from local cache
+[API:info: 23:43:14] Login complete as eg.email_1@example.co.nz
+MEGA CMD&gt;
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">whoami -l</rich_text>
+				<rich_text>
+Account e-mail: eg.email_1@example.co.nz
+    Available storage: 50.00 GBytes
+        In ROOT:      146... KBytes in     1 file(s) and     0 folder(s)
+        In INBOX:       0.00  Bytes in     0 file(s) and     0 folder(s)
+        In RUBBISH:     0.00  Bytes in     0 file(s) and     0 folder(s)
+        Total size taken up by file versions:      0.00  Bytes
+    Pro level: 0
+    Subscription type:
+    Account balance:
+Current Active Sessions:
+    * Current Session
+    Session ID: m3a8eluyPdo
+    Session start: 4/26/2018 11:43:12 AM
+    Most recent activity: 4/26/2018 11:43:13 AM
+    IP: 122.56.56.232
+    Country: NZ
+    User-Agent: MEGAcmd/0.9.9.0 (Windows 10.0.16299) MegaClient/3.3.5
+    -----
+1 active sessions opened
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">mount</rich_text>
+				<rich_text>
+ROOT on /
+INBOX on //in
+RUBBISH on //bin
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">ls</rich_text>
+				<rich_text>
+Welcome to MEGA.pdf
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">get &quot;Welcome to MEGA.pdf&quot;</rich_text>
+				<rich_text>
+TRANSFERING ||################################################################################||(1/1 MB: 100.00 %)
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">mkdir my-pictures</rich_text>
+				<rich_text>
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">cd my-pictures/</rich_text>
+				<rich_text>
+eg.email_1@example.co.nz:/my-pictures$ </rich_text>
+				<rich_text weight="heavy">put C:\Users\MYWINDOWSUSER\Pictures</rich_text>
+				<rich_text>
+TRANSFERING ||################################################################################||(1/1 MB: 100.00 %)
+eg.email_1@example.co.nz:/my-pictures$ </rich_text>
+				<rich_text weight="heavy">pwd</rich_text>
+				<rich_text>
+/my-pictures
+eg.email_1@example.co.nz:/my-pictures$ </rich_text>
+				<rich_text weight="heavy">ls</rich_text>
+				<rich_text>
+Pictures
+eg.email_1@example.co.nz:/my-pictures$ </rich_text>
+				<rich_text weight="heavy">cd Pictures/</rich_text>
+				<rich_text>
+eg.email_1@example.co.nz:/my-pictures/my-pictures$ </rich_text>
+				<rich_text weight="heavy">ls</rich_text>
+				<rich_text>
+Camera Roll
+Feedback
+Saved Pictures
+megacmdpkg.gif
+megacmdpkg_80.gif
+megacmdpkg_gray.gif
+eg.email_1@example.co.nz:/my-pictures/my-pictures$ </rich_text>
+				<rich_text weight="heavy">pwd</rich_text>
+				<rich_text>
+/my-pictures/Pictures
+eg.email_1@example.co.nz:/my-pictures/my-pictures$ </rich_text>
+				<rich_text weight="heavy">cd /</rich_text>
+				<rich_text>
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">du my-pictures/</rich_text>
+				<rich_text>
+FILENAME                                        SIZE
+my-pictures:                                 1376143
+----------------------------------------------------------------
+Total storage used:                          1376143
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">logout</rich_text>
+				<rich_text>
+Logging out...
+MEGA CMD&gt;</rich_text>
+			</node>
+			<node custom_icon_id="0" foreground="" is_bold="False" name="export import" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1570454835.2" ts_lastsave="1570454841.12" unique_id="66">
+				<rich_text>eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">export -a Pictures/</rich_text>
+				<rich_text>
+MEGA respects the copyrights of others and requires that users of the MEGA cloud service comply with the laws of copyright.
+You are strictly prohibited from using the MEGA cloud service to infringe copyrights.
+You may not upload, download, store, share, display, stream, distribute, email, link to, transmit or otherwise make available any files, data or content that infringes any copyright or other proprietary rights of any person or entity. Do you accept this terms? (Yes/No): Yes
+Please enter [y]es/[n]o/[a]ll/none:yes
+Exported /Pictures: https://mega.nz/#F!iaZlEBIL!mQD3rFuJhKov0sco-6s9xg
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">export</rich_text>
+				<rich_text>
+Pictures (folder, shared as exported permanent folder link: https://mega.nz/#F!iaZlEBIL!mQD3rFuJhKov0sco-6s9xg)
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">logout --keep-session</rich_text>
+				<rich_text>
+Logging out...
+Session closed but not deleted. Warning: it will be restored the next time you execute the application. Execute &quot;logout&quot; to delete the session permanently.
+You can also login with the session id: ARo7aiLAxK-jseOdVBYhj285Twb06ivWsFmT4XAnkTsiaDRRbm5oYS1zRm-V3I0FHHOvwj7P2RPvrSw_
+MEGA CMD&gt; </rich_text>
+				<rich_text weight="heavy">login eg.email_2@example.co.nz</rich_text>
+				<rich_text>
+Password:
+[API:info: 01:55:04] Fetching nodes ...
+[API:info: 01:55:05] Loading transfers from local cache
+[API:info: 01:55:05] Login complete as eg.email_2@example.co.nz
+MEGA CMD&gt;
+eg.email_2@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">ls</rich_text>
+				<rich_text>
+Welcome to MEGA.pdf
+eg.email_2@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">import https://mega.nz/#F!iaZlEBIL!mQD3rFuJhKov0sco-6s9xg</rich_text>
+				<rich_text>
+Imported folder complete: /Pictures
+eg.email_2@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">ls</rich_text>
+				<rich_text>
+Pictures
+Welcome to MEGA.pdf
+eg.email_2@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">ls Pictures/</rich_text>
+				<rich_text>
+Camera Roll
+Feedback
+Saved Pictures
+megacmdpkg.gif
+megacmdpkg_80.gif
+megacmdpkg_gray.gif
+eg.email_2@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">logout</rich_text>
+				<rich_text>
+Logging out...
+eg.email_2@example.co.nz:/$
+MEGA CMD&gt; </rich_text>
+				<rich_text weight="heavy">login ARo7aiLAxK-jseOdVBYhj285Twb06ivWsFmT4XAnkTsiaDRRbm5oYS1zRm-V3I0FHHOvwj7P2RPvrSw_</rich_text>
+				<rich_text>
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">export</rich_text>
+				<rich_text>
+Pictures (folder, shared as exported permanent folder link: https://mega.nz/#F!iaZlEBIL!mQD3rFuJhKov0sco-6s9xg)
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">export -d Pictures/</rich_text>
+				<rich_text>
+Disabled export: /Pictures
+eg.email_1@example.co.nz:/$ </rich_text>
+				<rich_text weight="heavy">export</rich_text>
+				<rich_text>
+Couldn't find anything exported below current folder. Use -a to export it
+eg.email_1@example.co.nz:/$</rich_text>
+			</node>
+		</node>
+	</node>
+</cherrytree>
